@@ -5,8 +5,7 @@ To create a simple RESTful API that will persist data in to a backend data store
 - Write a REST endpoint that will insert 1 document (in JSON) into the data  store.
 - The end point is as follows - POST /api/boardgame.
 - Determine what key to use when you save to Redis.
-- Once the document has been inserted return at 201 status code with the 
-following JSON payload - { “insert_count”: 1, “id”: <Redis key> }.
+- Once the document has been inserted return at 201 status code with the following JSON payload - { “insert_count”: 1, “id”: <Redis key> }.
 
 ### Task 2
 - Write a REST endpoint that will retrieve a given board game.

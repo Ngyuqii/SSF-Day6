@@ -7,28 +7,34 @@ import jakarta.json.JsonNumber;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonObjectBuilder;
 
+/*
+"rulebook": {
+            "total_count": 1,
+            "file": "rulebook-ultimate-mastermind.pdf"
+        }
+*/
+
 public class Rulebook implements Serializable {
     private int total_count;
     private String file;
 
-    //Getters and Setters
+    //Getters
     public String getFile() {
         return file;
     }
-
     public int getTotal_count() {
         return total_count;
     }
 
+    //Setters
     public void setTotal_count(int total_count) {
         this.total_count = total_count;
     }
-
     public void setFile(String file) {
         this.file = file;
     }
 
-    //Builder Method
+    //Create json object - Rulebook
     public JsonObjectBuilder toJSON() {
         return Json.createObjectBuilder()
                 .add("total_count", this.getTotal_count())

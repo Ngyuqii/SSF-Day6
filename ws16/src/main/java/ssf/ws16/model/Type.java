@@ -7,6 +7,19 @@ import jakarta.json.JsonNumber;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonObjectBuilder;
 
+/*
+"types":[
+            {
+                "type": "code",
+                "count": 72
+            },
+            {
+                "type": "key",
+                "count": 30
+            }
+        ]
+*/
+
 public class Type implements Serializable {
     private String type;
     private int count;
