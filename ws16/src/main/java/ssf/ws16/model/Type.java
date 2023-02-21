@@ -8,47 +8,47 @@ import jakarta.json.JsonObject;
 import jakarta.json.JsonObjectBuilder;
 
 /*
-"types":[
-            {
-                "type": "code",
-                "count": 72
-            },
-            {
-                "type": "key",
-                "count": 30
-            }
-        ]
+"types": [
+    {
+        "type": "code",
+        "count": 72
+    },
+    {
+        "type": "key",
+        "count": 30
+    }
+]
 */
 
 public class Type implements Serializable {
     private String type;
     private int count;
 
-    //Getters and Setters
+    //Getters
     public String getType() {
         return type;
     }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public int getCount() {
         return count;
     }
 
+    //Setters
+    public void setType(String type) {
+        this.type = type;
+    }
     public void setCount(int count) {
         this.count = count;
     }
 
+    //Create json object - Type array elements
     public JsonObjectBuilder toJSON() {
         return Json.createObjectBuilder()
                 .add("type", this.getType())
                 .add("count", this.getCount());
-
     }
 
-    public static Type createJson(JsonObject o) {
+    //Return type array element object from json object
+    public static Type createFromJson(JsonObject o) {
         Type t = new Type();
         JsonNumber count = o.getJsonNumber("count");
         String type = o.getString("type");

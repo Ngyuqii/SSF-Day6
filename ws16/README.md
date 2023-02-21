@@ -2,10 +2,10 @@
 To create a simple RESTful API that will persist data in to a backend data store. JSON will be used as the data exchange format between the client and the server. <br>
 
 ### Task 1
-- Write a REST endpoint that will insert 1 document (in JSON) into the data  store.
+- Write a REST endpoint that will insert 1 document (in JSON) into the data store.
 - The end point is as follows - POST /api/boardgame.
 - Determine what key to use when you save to Redis.
-- Once the document has been inserted return at 201 status code with the following JSON payload - { “insert_count”: 1, “id”: <Redis key> }.
+- Once the document has been inserted, return 201 status code with the following JSON payload - { “insert_count”: 1, “id”: <Redis key> }.
 
 ### Task 2
 - Write a REST endpoint that will retrieve a given board game.
@@ -14,7 +14,7 @@ To create a simple RESTful API that will persist data in to a backend data store
 - If the boardgame is not found, return a 404 status and an appropriate error object.
 
 ### Task 3
-- Write a REST endpoint that will update a document - PUT /api/boardgame/<boardgame id>. The above REST endpoint takes the payload from the request body and  attempts to update the data stored in Redis with the corresponding key - <boardgame id>.
+- Write a REST endpoint that will update a document - PUT /api/boardgame/<boardgame id>. The above REST endpoint takes the payload from the request body and attempts to update the data stored in Redis with the corresponding key - <boardgame id>.
 - If <boardgame id> does not exists, the endpoint should return a 400 status 
 code and an appropriate error object.
 - If the update was successful, return a 200 status code and the following 
@@ -53,4 +53,3 @@ true, then the endpoint should perform and insert if the <boardgame id> does not
     }
 }
 ```
-

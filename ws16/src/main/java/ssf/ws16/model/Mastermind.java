@@ -10,6 +10,11 @@ import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
 
+/*
+"name": "Mastermind",
+"pieces": { }
+*/
+
 public class Mastermind implements Serializable {
     private String name;
     private Pieces pieces;
@@ -33,56 +38,47 @@ public class Mastermind implements Serializable {
         return strBuilder.toString().substring(0, numChars);
     }
 
-    //Getters and Setters
+    //Getters
     public String getName() {
         return name;
     }
-
-    public void setName(String name) {
-        this.name = name;
+    public Pieces getPieces() {
+        return pieces;
     }
-
     public String getId() {
         return id;
     }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public int getInsertCount() {
         return insertCount;
     }
-
-    public void setInsertCount(int insertCount) {
-        this.insertCount = insertCount;
-    }
-
     public int getUpdateCount() {
         return updateCount;
     }
-
-    public void setUpdateCount(int updateCount) {
-        this.updateCount = updateCount;
-    }
-
     public boolean isUpSert() {
         return isUpSert;
     }
 
+    //Setters
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void setPieces(Pieces pieces) {
+        this.pieces = pieces;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
+    public void setInsertCount(int insertCount) {
+        this.insertCount = insertCount;
+    }
+    public void setUpdateCount(int updateCount) {
+        this.updateCount = updateCount;
+    }
     public void setUpSert(boolean isUpSert) {
         this.isUpSert = isUpSert;
     }
 
-    public Pieces getPieces() {
-        return pieces;
-    }
-
-    public void setPieces(Pieces pieces) {
-        this.pieces = pieces;
-    }
-
-    //Builder Methods
+    //Create json object - Main
     public JsonObject toJSON() {
         return Json.createObjectBuilder()
                 .add("name", this.getName())
@@ -91,6 +87,7 @@ public class Mastermind implements Serializable {
                 .build();
     }
 
+    //Create json output - insert count 
     public JsonObject toJSONInsert() {
         return Json.createObjectBuilder()
                 .add("id", this.getId())
@@ -98,6 +95,7 @@ public class Mastermind implements Serializable {
                 .build();
     }
 
+    //Create json output - update count
     public JsonObject toJSONUpdate() {
         return Json.createObjectBuilder()
                 .add("id", this.getId())
@@ -105,19 +103,21 @@ public class Mastermind implements Serializable {
                 .build();
     }
 
-    //Marshalling and Unmarshalling from string
-    //1. Create an Input Stream "is" from String
-    //2. Create a Reader "r" from the Input Stream
-    //3. Parse the string to JsonObject
+    //Take in json string from database (redis) and convert to Mastermind object
+    //Unmarshalling from string / deserialization
     public static Mastermind create(String json) throws IOException {
         Mastermind m = new Mastermind();
+
+        //1. Create an Input Stream "is" from String
+        //2. Create a Reader "r" from the Input Stream
+        //3. Parse the string to JsonObject
         try (InputStream is = new ByteArrayInputStream(json.getBytes())) {
             JsonReader r = Json.createReader(is);
             JsonObject o = r.readObject();
 
             m.setName(o.getString("name"));
             JsonObject pieces = o.getJsonObject("pieces");
-            m.setPieces(Pieces.createJson(pieces));
+            m.setPieces(Pieces.createFromJson(pieces));
         }
         return m;
     }

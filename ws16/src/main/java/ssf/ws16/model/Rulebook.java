@@ -9,9 +9,9 @@ import jakarta.json.JsonObjectBuilder;
 
 /*
 "rulebook": {
-            "total_count": 1,
-            "file": "rulebook-ultimate-mastermind.pdf"
-        }
+    "total_count": 1,
+    "file": "rulebook-ultimate-mastermind.pdf"
+}
 */
 
 public class Rulebook implements Serializable {
@@ -19,11 +19,11 @@ public class Rulebook implements Serializable {
     private String file;
 
     //Getters
-    public String getFile() {
-        return file;
-    }
     public int getTotal_count() {
         return total_count;
+    }
+    public String getFile() {
+        return file;
     }
 
     //Setters
@@ -41,7 +41,8 @@ public class Rulebook implements Serializable {
                 .add("file", this.getFile());
     }
 
-    public static Rulebook createJson(JsonObject o) {
+    //Return rulebook object from json object
+    public static Rulebook createFromJson(JsonObject o) {
         Rulebook rb = new Rulebook();
         JsonNumber totalCnt = o.getJsonNumber("total_count");
         String file = o.getString("file");

@@ -19,15 +19,15 @@ import ssf.ws16.model.Mastermind;
 import ssf.ws16.service.BoardGameService;
 
 @RestController
-@RequestMapping(path = "/api/boardgame", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/api/boardgame")
 public class BoardGameController {
 
     @Autowired
     private BoardGameService bgSvc;
     
-    //End point - POST /api/boardgame.
     //Inject payload as string into request handler
-    @PostMapping
+    //End point - POST /api/boardgame
+    @PostMapping (consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createBoardGame(@RequestBody Mastermind ms) {
         System.out.println("MS >" + ms.toString());
         int insertCnt = bgSvc.saveGame(ms);
@@ -35,7 +35,7 @@ public class BoardGameController {
         result.setId(ms.getId());
         result.setInsertCount(insertCnt);
 
-        //Fail to insert into redis
+        //Failed to insert into redis
         if (insertCnt == 0) {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -49,29 +49,34 @@ public class BoardGameController {
                 .body(result.toJSONInsert().toString());
     }
 
-    @GetMapping(path = "{msId}")
-    public ResponseEntity<String> getBoardGame(@PathVariable String msId)
-            throws IOException {
+    //Method to retrieve mastermind (string) by calling boardgame id
+    //End point - GET /api/boardgame/<boardgame id>
+    @GetMapping(path ="/{msId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getBoardGame(@PathVariable String msId) throws IOException {
         Mastermind ms = bgSvc.findById(msId);
+        //No mastermind matching requested id
         if (ms == null) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .contentType(MediaType.APPLICATION_JSON)
-                    .body("");
+                    .body("N.A");
         }
+        //Success
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(ms.toJSON().toString());
     }
 
-    @PutMapping(path = "{msId}")
+    //End point - PUT /api/boardgame/<boardgame id>?isUpsert=<true/false>
+    @PutMapping(path = "/{msId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> updateBoardGame(@RequestBody Mastermind ms,
             @PathVariable String msId, @RequestParam boolean isUpsert) throws IOException {
         Mastermind result = null;
         System.out.println("ctrl > " + isUpsert);
         ms.setUpSert(isUpsert);
 
+        //Upsert set to false
         if (!isUpsert) {
             result = bgSvc.findById(msId);
 
@@ -81,8 +86,11 @@ public class BoardGameController {
                         .contentType(MediaType.APPLICATION_JSON)
                         .body("400");
         }
-        if (isUpsert)
+
+        //Upset is true
+        if (isUpsert) {
             ms.setId(msId);
+        }
         int updatedCount = bgSvc.update(ms);
         ms.setUpdateCount(updatedCount);
         return ResponseEntity
